@@ -67,6 +67,10 @@ export class Veiculo {
   @Column({length: 1000, nullable: false })
   itens: string;
 
+  @IsNotEmpty()
+  @Column({type: 'boolean', nullable:false, default:true})
+  disponibilidade:boolean;
+
   @CreateDateColumn()
   criado_em: Date;
 
