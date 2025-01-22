@@ -15,7 +15,7 @@ export class VeiculoService {
 
     if (ano < 2020) {
       throw new HttpException(
-        'O ano de fabricação do veículo é menor do que o mínimo permitido (2020).',
+        'O ano informado para o veículo não é válido. Apenas carros fabricados a partir de 2020 são aceitos. 😊 ',
         HttpStatus.FORBIDDEN,
       );
     } else {
@@ -57,31 +57,18 @@ export class VeiculoService {
     });
   }
 
-  async findAllAvailable(): Promise<Veiculo[]> {
+  async findAllAvailable(disponibilidade: boolean): Promise<Veiculo[]> {
     return await this.veiculoRepository.find({
       where: {
-        disponibilidade: true,
-      },
-      relations: {
-        //  viagem: true,
+        disponibilidade: disponibilidade,
       },
     });
   }
 
-  async findAllDisable(): Promise<Veiculo[]> {
-    return await this.veiculoRepository.find({
-      where: {
-        disponibilidade: false,
-      },
-      relations: {
-        //  viagem: true,
-      },
-    });
-  }
 
   async update(veiculo: Veiculo): Promise<Veiculo> {
     await this.findById(veiculo.id);
-    
+
     return await this.veiculoRepository.save(veiculo);
   }
 
