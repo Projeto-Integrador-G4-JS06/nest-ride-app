@@ -1,5 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { Viagem } from './viagem/entities/viagem.entity';
+import { ViagemModule } from './viagem/viagem.module';
 
 @Module({
   imports: [TypeOrmModule.forRoot({
@@ -8,13 +10,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     port: 3306,
     username: 'root',
     password: 'root',
-    database: '', // Cadastrar o nome do BD
-    entities: [], // Cadastrar as Classes Entities, para que o 
-    // TypeORM possa gerar as tabelas correspondentes no BD
+    database: 'db_rides_app',
+    entities: [Viagem],
     synchronize: true,
     logging: true
   }),
-  // Inserir nome da classe module de cada entidade (ex.: PostagemModule)
+  ViagemModule,
   ],
   controllers: [],
   providers: [],
