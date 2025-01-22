@@ -15,7 +15,7 @@ export class VeiculoService {
 
     if (ano < 2020) {
       throw new HttpException(
-        'O ano de fabricação do veículo é menor do que o mínimo permitido(2020).',
+        'O ano de fabricação do veículo é menor do que o mínimo permitido (2020).',
         HttpStatus.FORBIDDEN,
       );
     } else {
@@ -34,12 +34,12 @@ export class VeiculoService {
     });
 
     if (!veiculo)
-      throw new HttpException('Veiculo não encontrado', HttpStatus.NOT_FOUND);
+      throw new HttpException('Veículo não encontrado', HttpStatus.NOT_FOUND);
     return veiculo;
   }
 
-  async findByModelo(modelo: string): Promise<Veiculo> {
-    return await this.veiculoRepository.findOne({
+  async findByModelo(modelo: string): Promise<Veiculo[]> {
+    return await this.veiculoRepository.find({
       where: {
         modelo: ILike(`%${modelo}%`),
       },
@@ -59,8 +59,8 @@ export class VeiculoService {
 
   async findAllAvailable(): Promise<Veiculo[]> {
     return await this.veiculoRepository.find({
-      where:{
-        disponibilidade:true,
+      where: {
+        disponibilidade: true,
       },
       relations: {
         //  viagem: true,
@@ -70,8 +70,8 @@ export class VeiculoService {
 
   async findAllDisable(): Promise<Veiculo[]> {
     return await this.veiculoRepository.find({
-      where:{
-        disponibilidade:false,
+      where: {
+        disponibilidade: false,
       },
       relations: {
         //  viagem: true,
@@ -81,7 +81,7 @@ export class VeiculoService {
 
   async update(veiculo: Veiculo): Promise<Veiculo> {
     await this.findById(veiculo.id);
-
+    
     return await this.veiculoRepository.save(veiculo);
   }
 
