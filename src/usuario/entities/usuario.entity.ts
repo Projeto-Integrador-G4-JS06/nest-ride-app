@@ -15,12 +15,12 @@ import {
   
     @IsNotEmpty()
     @Column({ length: 255, nullable: false })
-    nome_completo: string;
+    nome: string;
   
     @IsEmail()
     @IsNotEmpty()
     @Column({ length: 255, nullable: false })
-    usuario: string;
+    email: string;
   
     @MinLength(8)
     @IsNotEmpty()
@@ -43,6 +43,10 @@ import {
     @IsDate()
     @Type(() => Date)
     data_nascimento: Date;
+
+    @IsNotEmpty()
+    @Column({ length: 255, nullable: false })
+    tipo_usuario: string;
 
 
     @CreateDateColumn()

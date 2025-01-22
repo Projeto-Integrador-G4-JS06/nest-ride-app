@@ -14,7 +14,7 @@ import { VeiculoService } from './../services/veiculo.service';
 import { Veiculo } from '../entities/veiculo.entity';
 
 @Controller('/veiculo')
-export class VeiculoCrontoller {
+export class VeiculoController {
   constructor(private readonly veiculoService: VeiculoService) {}
 
   @Post('/cadastrar')
