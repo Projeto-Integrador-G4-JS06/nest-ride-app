@@ -1,5 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { Viagem } from './viagem/entities/viagem.entity';
+import { ViagemModule } from './viagem/viagem.module';
 import { UsuarioModule } from './usuario/usuario.module';
 import { Usuario } from './usuario/entities/usuario.entity';
 import { Veiculo } from './veiculos/entities/veiculo.entity';
@@ -12,16 +14,14 @@ import { VeiculoModule } from './veiculos/veiculo.module';
     port: 3306,
     username: 'root',
     password: 'root',
-    database: 'db_rides_app', // Cadastrar o nome do BD
-    entities: [Usuario, Veiculo], // Cadastrar as Classes Entities, para que o 
-    // TypeORM possa gerar as tabelas correspondentes no BD
+    database: 'db_rides_app',
+    entities: [Viagem, Usuario, Veiculo],
     synchronize: true,
     logging: true
   }),
-  UsuarioModule, VeiculoModule
-  // Inserir nome da classe module de cada entidade (ex.: PostagemModule)
-  
-
+    ViagemModule,
+    UsuarioModule,
+    VeiculoModule
   ],
   controllers: [],
   providers: [],
