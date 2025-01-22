@@ -2,6 +2,10 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Viagem } from './viagem/entities/viagem.entity';
 import { ViagemModule } from './viagem/viagem.module';
+import { UsuarioModule } from './usuario/usuario.module';
+import { Usuario } from './usuario/entities/usuario.entity';
+import { Veiculo } from './veiculos/entities/veiculo.entity';
+import { VeiculoModule } from './veiculos/veiculos.module';
 
 @Module({
   imports: [TypeOrmModule.forRoot({
@@ -11,11 +15,13 @@ import { ViagemModule } from './viagem/viagem.module';
     username: 'root',
     password: 'root',
     database: 'db_rides_app',
-    entities: [Viagem],
+    entities: [Viagem, Usuario, Veiculo],
     synchronize: true,
     logging: true
   }),
-  ViagemModule,
+    ViagemModule,
+    UsuarioModule,
+    VeiculoModule
   ],
   controllers: [],
   providers: [],
