@@ -23,7 +23,7 @@ export class VeiculoController {
     return this.veiculoService.create(veiculo);
   }
 
-  @Get('/:id')
+  @Get('/id/:id')
   @HttpCode(HttpStatus.OK)
   findById(@Param('id', ParseIntPipe) id: number): Promise<Veiculo> {
     return this.veiculoService.findById(id);
@@ -35,23 +35,18 @@ export class VeiculoController {
     return this.veiculoService.findByModelo(modelo);
   }
 
-  @Get('/all')
+  @Get('')
   @HttpCode(HttpStatus.OK)
   findAll(): Promise<Veiculo[]> {
     return this.veiculoService.findAll();
   }
 
-  @Get('/ativos')
+  @Get('/disponibilidade/:disponibilidade')
   @HttpCode(HttpStatus.OK)
-  findAllAvailable(): Promise<Veiculo[]> {
-    return this.veiculoService.findAllAvailable();
+  findAllAvailable(@Param('disponibilidade') disponibilidade:boolean): Promise<Veiculo[]> {
+    return this.veiculoService.findAllAvailable(disponibilidade);
   }
 
-  @Get('/desativados')
-  @HttpCode(HttpStatus.OK)
-  findAllDisable(): Promise<Veiculo[]> {
-    return this.veiculoService.findAllDisable();
-  }
   @Put('/atualizar')
   @HttpCode(HttpStatus.OK)
   async update(@Body() veiculo: Veiculo): Promise<Veiculo> {

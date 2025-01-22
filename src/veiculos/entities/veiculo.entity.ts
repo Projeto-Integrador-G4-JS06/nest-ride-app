@@ -49,7 +49,6 @@ export class Veiculo {
   @Column({ nullable: false })
   kilometragem: number;
 
-  @Transform(({ value }: TransformFnParams) => value?.trim())
   @IsNotEmpty()
   @Column({nullable: false })
   autonomia: number;
