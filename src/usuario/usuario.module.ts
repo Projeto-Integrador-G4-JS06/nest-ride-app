@@ -7,4 +7,4 @@ import { TypeOrmModule } from "@nestjs/typeorm";
     controllers: [], // Registrar as classes Controladoras
     exports: [], // Adicionar as classes que precisam ser disponibilizadas para outros módulos
 })
-export class ExampleModule {}
+export class UsuarioModule {}
