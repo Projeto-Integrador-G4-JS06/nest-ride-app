@@ -38,8 +38,8 @@ export class Viagem {
     @Column({type: "float", nullable: false})
     vel_media: number;
 
-    @Column({type: "int", nullable: false})
-    duracao: Date;
+    @Column({length: 8, nullable: false})
+    duracao: string;
 
     @IsNumber({ maxDecimalPlaces: 2 })
     @IsNotEmpty()
