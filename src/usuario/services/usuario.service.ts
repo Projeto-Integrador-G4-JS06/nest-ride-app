@@ -3,6 +3,33 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Usuario } from '../entities/usuario.entity';
 import { ILike, Repository } from 'typeorm';
 
+export function validarIdade(dataNascimento: string | Date, idadeMinima: number = 18): void {
+    const dataNascimentoDate = new Date(dataNascimento);
+  
+    const dataAtual = new Date();
+    let idade = dataAtual.getFullYear() - dataNascimentoDate.getFullYear();
+    const mesAtual = dataAtual.getMonth();
+    const diaAtual = dataAtual.getDate();
+    const mesNascimento = dataNascimentoDate.getMonth();
+    const diaNascimento = dataNascimentoDate.getDate();
+  
+    if (
+      mesAtual < mesNascimento ||
+      (mesAtual === mesNascimento && diaAtual < diaNascimento)
+    ) {
+      idade--;
+    }
+  
+    if (idade < idadeMinima) {
+      throw new HttpException('Usuário menor de idade!', HttpStatus.BAD_REQUEST);
+    }
+  }
+
+
+
+
+
+
 @Injectable()
 export class UsuarioService {
   constructor(
@@ -34,10 +61,10 @@ export class UsuarioService {
     return usuario;
   }
 
-  async findByNome(nome_completo: string): Promise<Usuario[]> {
+  async findByCpf(cpf: string): Promise<Usuario[]> {
     return this.usuarioRepository.find({
       where: {
-        nome_completo: ILike(`%${nome_completo}%`),
+        cpf: ILike(`%${cpf}%`),
       },
     //  relations:{
     //    usuario: true
@@ -45,11 +72,11 @@ export class UsuarioService {
     })
   }
 
-  //metodo auxiliar para validação do usuario
-  async findByUsuario(usuario: string): Promise<Usuario | undefined> {
+  // Método auxiliar para validação do usuário
+  async findByEmail(email: string): Promise<Usuario | undefined> {
     return await this.usuarioRepository.findOne({
       where: {
-        usuario: usuario,
+        email: email,
       },
        //  relations:{
     //    usuario: true
@@ -57,50 +84,40 @@ export class UsuarioService {
     });
   }
 
-  async create(usuario: Usuario): Promise<Usuario> {
-    const buscaUsuario = await this.findByUsuario(usuario.usuario);
 
-    if (buscaUsuario)
+async create(usuario: Usuario): Promise<Usuario> {
+    const buscaUsuario = await this.findByEmail(usuario.email);
+  
+    if (buscaUsuario) {
       throw new HttpException('O Usuário já existe!', HttpStatus.BAD_REQUEST);
-
-    usuario.data_nascimento = new Date(usuario.data_nascimento);
-
-    const dataAtual = new Date();
-    let idade = dataAtual.getFullYear() - usuario.data_nascimento.getFullYear();
-    const diaAtual = dataAtual.getDay();
-    const mesAtual = dataAtual.getMonth();
-    const mesNascimento = usuario.data_nascimento.getMonth();
-    const diaNascimento = usuario.data_nascimento.getDay();
-
-    if (
-      mesAtual < mesNascimento ||
-      (mesAtual === mesNascimento && diaAtual < diaNascimento)
-    )
-      idade--;
-
-    if (idade < 18)
-      throw new HttpException(
-        'Usuario precisa ter 18 anos!',
-        HttpStatus.BAD_REQUEST,
-      );
-
+    }
+  
+    // Validar a idade do usuário
+    validarIdade(usuario.data_nascimento);
+  
     return await this.usuarioRepository.save(usuario);
   }
 
-//não esquecer de não deixar atualizar usuarios menores de idade
+
   async update(usuario: Usuario): Promise<Usuario> {
     await this.findById(usuario.id);
 
-    const buscaUsuario = await this.findByUsuario(usuario.usuario);
+    const buscaUsuario = await this.findByEmail(usuario.email);
 
     if (buscaUsuario && buscaUsuario.id !== usuario.id)
       throw new HttpException(
-        'O Usuário (e-mail) já cadastrado!',
+        'Usuário (e-mail) já cadastrado!',
         HttpStatus.BAD_REQUEST,
       );
 
-
-
+    validarIdade(usuario.data_nascimento);
+  
     return await this.usuarioRepository.save(usuario);
-  }
+
+
+    }
+
+
+
+  
 }

@@ -3,7 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsuarioModule } from './usuario/usuario.module';
 import { Usuario } from './usuario/entities/usuario.entity';
 import { Veiculo } from './veiculos/entities/veiculo.entity';
-import { VeiculoModule } from './veiculos/veiculos.module';
+import { VeiculoModule } from './veiculos/veiculo.module';
 
 @Module({
   imports: [TypeOrmModule.forRoot({
