@@ -30,8 +30,7 @@ export class Viagem {
     @Column({length: 255, nullable: false})
     local_destino: string;
 
-    @IsNotEmpty()
-    @Column({type: "float", nullable: false})
+    @Column({type: "float", nullable: true})
     distancia: number;
 
     @IsNotEmpty()
