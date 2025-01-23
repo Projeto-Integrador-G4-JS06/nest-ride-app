@@ -21,7 +21,7 @@ export function validarIdade(dataNascimento: string | Date, idadeMinima: number 
     }
   
     if (idade < idadeMinima) {
-      throw new HttpException('Usuário menor de idade!', HttpStatus.BAD_REQUEST);
+      throw new HttpException('Usuário com idade inferior à permitida.', HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -62,14 +62,22 @@ export class UsuarioService {
   }
 
   async findByCpf(cpf: string): Promise<Usuario[]> {
-    return this.usuarioRepository.find({
+    const cpfs = await this.usuarioRepository.find({
       where: {
         cpf: ILike(`%${cpf}%`),
       },
     //  relations:{
     //    usuario: true
     // }
-    })
+    });
+    if (cpfs.length === 0) {
+      throw new HttpException(
+        'Nenhum usuário encontrado com o CPF informado.',
+        HttpStatus.NOT_FOUND
+      );
+
+    }
+    return cpfs;
   }
 
   // Método auxiliar para validação do usuário
