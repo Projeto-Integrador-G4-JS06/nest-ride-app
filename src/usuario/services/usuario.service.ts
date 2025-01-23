@@ -24,7 +24,7 @@ export function validarIdade(
   }
 
   if (idade < idadeMinima) {
-    throw new HttpException('Usuário menor de idade!', HttpStatus.BAD_REQUEST);
+    throw new HttpException('Usuário com idade inferior à permitida.', HttpStatus.BAD_REQUEST);
   }
 }
 
@@ -37,9 +37,9 @@ export class UsuarioService {
 
   async findAll(): Promise<Usuario[]> {
     return await this.usuarioRepository.find({
-    //  relations: {
-    //    viagem: true,
-    //  },
+      relations: {
+        viagem: true,
+      },
     });
   }
 
@@ -48,9 +48,9 @@ export class UsuarioService {
       where: {
         id,
       },
-    //  relations: {
-    //    viagem: true,
-    //  },
+      relations: {
+        viagem: true,
+      },
     });
 
     if (!usuario)
@@ -62,11 +62,11 @@ export class UsuarioService {
   async findByNome(nome: string): Promise<Usuario[]> {
     return this.usuarioRepository.find({
       where: {
-        cpf: ILike(`%${nome}%`),
+        nome: ILike(`%${nome}%`),
       },
-    //  relations: {
-     //   viagem: true,
-    //  },
+      relations: {
+        viagem: true,
+      },
     });
   }
 
@@ -76,9 +76,9 @@ export class UsuarioService {
       where: {
         email: email,
       },
-   //   relations: {
-    //    viagem: true,
-    //  },
+      relations: {
+        viagem: true,
+      },
     });
   }
 

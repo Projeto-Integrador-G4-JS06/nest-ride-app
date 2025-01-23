@@ -1,8 +1,10 @@
 import { Transform, TransformFnParams } from "class-transformer";
 import { IsNotEmpty, IsNumber, IsPositive } from "class-validator";
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { NumericTransformer } from "../../util/numerictransformer";
 import { DateTransformer } from "../../util/datetransformer";
+import { Veiculo } from "../../veiculo/entities/veiculo.entity";
+import { Usuario } from "../../usuario/entities/usuario.entity";
 
 
 @Entity({name: 'tb_viagens'})
@@ -30,8 +32,7 @@ export class Viagem {
     @Column({length: 255, nullable: false})
     local_destino: string;
 
-    @IsNotEmpty()
-    @Column({type: "float", nullable: false})
+    @Column({type: "float", nullable: true})
     distancia: number;
 
     @IsNotEmpty()
@@ -47,18 +48,21 @@ export class Viagem {
     @Column({ type: "decimal", precision: 10, scale: 2, transformer: new NumericTransformer(), nullable: false})
     preco: number;
 
-    //veiculo: Veiculo;
+    @ManyToOne(() => Veiculo, (veiculo) => veiculo.viagem, {
+        onDelete: "CASCADE"
+    })
+    veiculo: Veiculo;
 
-    //=usuario: Usuario;
+     @ManyToOne(() => Usuario, (usuario) => usuario.viagem, {
+         onDelete: "CASCADE"
+     })
+     usuario: Usuario;
 
     @CreateDateColumn()
     criado_em: Date;
 
     @UpdateDateColumn()
     atualizado_em: Date;
-  usuario: any;
-
-
-
+  
 
 }
