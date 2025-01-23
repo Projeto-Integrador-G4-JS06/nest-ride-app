@@ -13,7 +13,7 @@ import {
 import { VeiculoService } from './../services/veiculo.service';
 import { Veiculo } from '../entities/veiculo.entity';
 
-@Controller('/veiculo')
+@Controller('/veiculos')
 export class VeiculoController {
   constructor(private readonly veiculoService: VeiculoService) {}
 
@@ -35,7 +35,7 @@ export class VeiculoController {
     return this.veiculoService.findByModelo(modelo);
   }
 
-  @Get('')
+  @Get()
   @HttpCode(HttpStatus.OK)
   findAll(): Promise<Veiculo[]> {
     return this.veiculoService.findAll();
