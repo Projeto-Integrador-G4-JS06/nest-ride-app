@@ -43,14 +43,14 @@ classDiagram
         - data_nascimento: Date
         - foto: string
         - numero_telefone: string
-        - tipo_usuario
+        - tipo_usuario: string
+        - endereco: string
         - criado_em: Date
         - atualizado_em: Date
         - viagem: Viagem
         + create(usuario: Usuario): Promise<Usuario>
         + findAll(): Promise<Usuario[]>
         + findById(id: number): Promise<Usuario>
-        + findByCpf(cpf: string): Promise<Usuario[]>
         + findByNome(nome:string): Promise<Usuario[]>
         +findByEmail(email: string): Promise<Usuario | undefined>
         + update(usuario: Usuario): Promise<Usuario>
@@ -67,8 +67,9 @@ classDiagram
         - cor: string
         - tipo: string
         - foto: string
-        - num_assentos: number
         - tipo_combustivel: string
+        - num_assentos: number
+        - autonomia: number
         - capacidade: number
         - itens: string
         - disponibilidade: boolean
@@ -101,7 +102,8 @@ classDiagram
         - veiculo_id: number
         + create(viagem: Viagem): Promise<Viagem>
         + findAll(): Promise<Viagem[]>
-        +findById(id: number): Promise<Viagem>
+        + findById(id: number): Promise<Viagem>
+        + findByDestino(local_destino: string): Promise<Viagem[]>
         + findByDestino(local_destino: string): Promise<Viagem[]>
         + update(viagem: Viagem): Promise<Viagem>
         + delete(id: number): Promise<DeleteResult>
@@ -118,6 +120,7 @@ classDiagram
    Viagem "n" --> "1" Veiculo
 
 ```
+
 ------
 
 ## 4. Diagrama Entidade-Relacionamento (DER)
