@@ -15,10 +15,10 @@ export class ViagemService{
 
     async findAll(): Promise<Viagem[]>{
         return this.viagemRepository.find({
-            // relations:{
-            //     veiculo: true,
+            relations:{
+                veiculo: true,
             //     usuario: true
-            // }
+            }
         }); 
     }
 
@@ -27,10 +27,10 @@ export class ViagemService{
             where: {
                 id
             },
-            // relations:{
-            //     veiculo: true,
+            relations:{
+                veiculo: true,
             //     usuario: true
-            // }
+            }
         })
 
         if(!viagem)
@@ -43,10 +43,10 @@ export class ViagemService{
             where: {
                 local_destino: ILike(`%${local_destino}%`)
             },
-            // relations:{
-            //     veiculo: true,
+            relations:{
+                veiculo: true,
             //     usuario: true
-            // }
+            }
         }); 
     }
 

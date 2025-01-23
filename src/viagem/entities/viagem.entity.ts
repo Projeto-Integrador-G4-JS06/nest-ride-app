@@ -48,10 +48,10 @@ export class Viagem {
     @Column({ type: "decimal", precision: 10, scale: 2, transformer: new NumericTransformer(), nullable: false})
     preco: number;
 
-    // @ManyToOne(() => Veiculo, (veiculo) => veiculo.viagem, {
-    //     onDelete: "CASCADE"
-    // })
-    // veiculo: Veiculo;
+    @ManyToOne(() => Veiculo, (veiculo) => veiculo.viagem, {
+        onDelete: "CASCADE"
+    })
+    veiculo: Veiculo;
 
     // @ManyToOne(() => Usuario, (usuario) => usuario.viagem, {
     //     onDelete: "CASCADE"

@@ -29,7 +29,7 @@ export class VeiculoService {
         id,
       },
       relations: {
-        // viagem: true,
+        viagem: true,
       },
     });
 
@@ -44,7 +44,7 @@ export class VeiculoService {
         modelo: ILike(`%${modelo}%`),
       },
       relations: {
-        // viagem: true,
+        viagem: true,
       },
     });
   }
@@ -52,7 +52,7 @@ export class VeiculoService {
   async findAll(): Promise<Veiculo[]> {
     return await this.veiculoRepository.find({
       relations: {
-        //  viagem: true,
+        viagem: true,
       },
     });
   }

@@ -1,6 +1,8 @@
 import { Transform, TransformFnParams } from 'class-transformer';
 import { IsNotEmpty } from 'class-validator';
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Viagem } from '../../viagem/entities/viagem.entity';
+import { NumericTransformer } from '../../util/numerictransformer';
 
 @Entity({ name: 'tb_veiculos' })
 export class Veiculo {
@@ -46,11 +48,11 @@ export class Veiculo {
   placa: string;
 
   @IsNotEmpty()
-  @Column({ nullable: false })
+  @Column({ type: "decimal", precision: 10, scale: 2, transformer: new NumericTransformer(), nullable: false})
   kilometragem: number;
 
   @IsNotEmpty()
-  @Column({nullable: false })
+  @Column({ type: "decimal", precision: 10, scale: 2, transformer: new NumericTransformer(), nullable: false})
   autonomia: number;
 
   @IsNotEmpty()
@@ -76,8 +78,8 @@ export class Veiculo {
   @UpdateDateColumn()
   atualizado_em: Date;
 
-//   @OneToMany(() => Viagem, (viagem) => viagem.veiculo)
-//   viagem: Viagem[];
+  @OneToMany(() => Viagem, (viagem) => viagem.veiculo)
+  viagem: Viagem[];
 
   
 }
