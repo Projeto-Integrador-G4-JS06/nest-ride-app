@@ -4,8 +4,8 @@ import { Viagem } from './viagem/entities/viagem.entity';
 import { ViagemModule } from './viagem/viagem.module';
 import { UsuarioModule } from './usuario/usuario.module';
 import { Usuario } from './usuario/entities/usuario.entity';
-import { Veiculo } from './veiculos/entities/veiculo.entity';
-import { VeiculoModule } from './veiculos/veiculos.module';
+import { Veiculo } from './veiculo/entities/veiculo.entity';
+import { VeiculoModule } from './veiculo/veiculo.module';
 
 @Module({
   imports: [TypeOrmModule.forRoot({
