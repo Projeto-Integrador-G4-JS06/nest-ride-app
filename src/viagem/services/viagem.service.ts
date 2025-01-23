@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
+import { BadRequestException, HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Viagem } from "../entities/viagem.entity";
 import { DeleteResult, ILike, Repository } from "typeorm";
@@ -15,14 +15,21 @@ export class ViagemService{
 
     async findAll(): Promise<Viagem[]>{
         return this.viagemRepository.find({
-            
+            relations:{
+                veiculo: true,
+            //     usuario: true
+            }
         }); 
     }
 
     async findById(id: number): Promise<Viagem>{
         const viagem = await this.viagemRepository.findOne({
             where: {
-                id,
+                id
+            },
+            relations:{
+                veiculo: true,
+            //     usuario: true
             }
         })
 
@@ -35,21 +42,31 @@ export class ViagemService{
         return this.viagemRepository.find({
             where: {
                 local_destino: ILike(`%${local_destino}%`)
+            },
+            relations:{
+                veiculo: true,
+            //     usuario: true
             }
         }); 
     }
 
     async create(viagem: Viagem): Promise<Viagem>{
 
+        //calculo da duração
         const duracaoSegundos = this.calcularDuracao(
             viagem.distancia,
             viagem.vel_media
         )
 
+        //formatação para hh:mm:ss
         viagem.duracao = this.formatarDuracao(duracaoSegundos)
 
+        //validação para não aceitar data retroativa
+        this.validarData(viagem.data_partida)
+
         return await this.viagemRepository.save(viagem)
-     }
+
+    }
 
     async update(viagem: Viagem): Promise<Viagem>{
         await this.findById(viagem.id)
@@ -60,6 +77,8 @@ export class ViagemService{
         )
         
         viagem.duracao = this.formatarDuracao(duracaoSegundos)
+
+        this.validarData(viagem.data_partida)
 
         return await this.viagemRepository.save(viagem)
      }
@@ -88,6 +107,15 @@ export class ViagemService{
         const formatador = new Intl.NumberFormat('pt-BR', { minimumIntegerDigits: 2 });
     
         return `${formatador.format(horas)}:${formatador.format(minutos)}:${formatador.format(segundos)}`;
+    }
+
+    validarData(data_partida: Date) {
+
+        const { isPast } = require("date-fns");
+        const result = isPast(data_partida);
+
+        if(result)
+            throw new BadRequestException('A data de partida não pode ser retroativa')
     }
 
 

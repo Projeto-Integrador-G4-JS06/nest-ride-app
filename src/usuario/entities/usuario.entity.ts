@@ -55,7 +55,6 @@ import {
     @UpdateDateColumn()
     atualizado_em: Date
 
-
    /* @OneToMany(() => Viagem, (viagem) => viagem.usuario)
     viagem: Viagem[]; */
 

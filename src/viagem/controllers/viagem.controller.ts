@@ -24,7 +24,7 @@ export class ViagemController {
 
     @Get('/local_destino/:local_destino')
     @HttpCode(HttpStatus.OK)
-    findByTitulo(@Param('local_destino') local_destino: string): Promise<Viagem[]>{
+    findByDestino(@Param('local_destino') local_destino: string): Promise<Viagem[]>{
         return this.viagemService.findByDestino(local_destino);
     }
 
