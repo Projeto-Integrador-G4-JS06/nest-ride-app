@@ -1,99 +1,169 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Projeto BoraAí - Backend
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+<br />
+<div align="center">
+    <img src="https://i.imgur.com/icgjsRQ.png" title="source: imgur.com" width="50%"/>
+</div>
+<br /><br />
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## 1. Descrição
 
-## Description
+O BoraAí é uma plataforma de caronas compartilhadas que conecta motoristas e passageiros que possuem trajetos em comum. Com foco na praticidade, economia e sustentabilidade, a aplicação permite criar e gerenciar viagens, promovendo a redução de custos e o impacto ambiental positivo. 
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+------
 
-## Project setup
+## 2. Sobre esta API
 
-```bash
-$ npm install
+Esta API foi construída para ser o backend do sistema BoraAí, centralizando o gerenciamento de usuários, veículos e viagens. Sua arquitetura segue os princípios de modularidade, escalabilidade e boas práticas de desenvolvimento, garantindo alta performance e facilidade de manutenção.
+
+### 2.1. Principais Funcionalidades
+
+1. Cadastro e gerenciamento de usuários.  
+
+2. Cadastro e gerenciamento de veículos.  
+
+3. Criação, consulta e gerenciamento de viagens.  
+
+4. Relacionamentos eficientes entre entidades (usuários, veículos e viagens).  
+
+5. Banco de dados relacional com suporte a consultas e transações complexas.  
+
+------
+
+## 3. Diagrama de Classes
+
+``` mermaid
+classDiagram
+    class Usuario {
+        - id: number
+        - nome_completo: string
+        - username: string
+        - senha: string
+        - cpf: string
+        - data_nascimento: Date
+        - foto: string
+        - numero_telefone: string
+        - tipo_usuario
+        - criado_em: Date
+        - atualizado_em: Date
+        - viagem: Viagem
+        + create(usuario: Usuario): Promise<Usuario>
+        + findAll(): Promise<Usuario[]>
+        + findById(id: number): Promise<Usuario>
+        + findByCpf(cpf: string): Promise<Usuario[]>
+        + findByNome(nome:string): Promise<Usuario[]>
+        +findByEmail(email: string): Promise<Usuario | undefined>
+        + update(usuario: Usuario): Promise<Usuario>
+        + validarIdade((dataNascimento: string | Date, idadeMinima: number = 18)
+
+    }
+
+    class Veiculo {
+        - id: number
+        - modelo: string
+        - placa: string
+        - marca: string
+        - ano: number
+        - cor: string
+        - tipo: string
+        - foto: string
+        - num_assentos: number
+        - tipo_combustivel: string
+        - capacidade: number
+        - itens: string
+        - disponibilidade: boolean
+        - criadoEm: Date
+        - atualizadoEm: Date
+        - viagem: Viagem
+        + create(veiculo: Veiculo): Promise<Veiculo> 
+        + findById(id: number): Promise<Veiculo>
+        + findByModelo(modelo: string): Promise<Veiculo[]>
+        + findAll(): Promise<Veiculo[]>
+        + findAllAvailable(disponibilidade: boolean): Promise<Veiculo[]>
+        + update(veiculo: Veiculo): Promise<Veiculo>
+        + delete(id: number): Promise<DeleteResult>
+
+
+        
+    }
+
+    class Viagem {
+        - id: number
+        - local_partida: string
+        - horario_partida: string
+        - data_partida: string
+        - local_destino: string
+        - distancia: number
+        - vel_media: number
+        - duracao: number
+        - preco: number
+        - usuario_id: number
+        - veiculo_id: number
+        + create(viagem: Viagem): Promise<Viagem>
+        + findAll(): Promise<Viagem[]>
+        +findById(id: number): Promise<Viagem>
+        + findByDestino(local_destino: string): Promise<Viagem[]>
+        + update(viagem: Viagem): Promise<Viagem>
+        + delete(id: number): Promise<DeleteResult>
+        +  calcularDuracao(distancia: number, vel_media: number): number
+        + formatarDuracao(segundosTotais: number): string
+        + validarData(data_partida:Date): boolean
+        
+        
+    }
+
+    Usuario "1" --> "n" Viagem : 
+    Viagem "n" --> "1" Usuario : 
+   Veiculo "1" --> "n" Viagem 
+   Viagem "n" --> "1" Veiculo
+
 ```
+------
 
-## Compile and run the project
+## 4. Diagrama Entidade-Relacionamento (DER)
 
-```bash
-# development
-$ npm run start
+Adicione a imagem do Diagrama:
 
-# watch mode
-$ npm run start:dev
+<div align="center">
+    <img src="https://cdn.discordapp.com/attachments/1331751152190099576/1332038711793418240/DER.png?ex=6793cd38&is=67927bb8&hm=d0da1b4b4887e9c7a00e41cb062289aef1da62f8cc585635121d78d12736b761&" alt="Diagrama Entidade-Relacionamento (DER)" />
+</div>
 
-# production mode
-$ npm run start:prod
-```
+---
 
-## Run tests
+## 5. Tecnologias Utilizadas
 
-```bash
-# unit tests
-$ npm run test
+| Item                          | Descrição  |
+| ----------------------------- | ---------- |
+| **Servidor**                  | Node.js    |
+| **Linguagem de Programação**  | TypeScript |
+| **Framework**                 | NestJS     |
+| **ORM**                       | TypeORM    |
+| **Banco de Dados Relacional** | MySQL      |
 
-# e2e tests
-$ npm run test:e2e
+------
 
-# test coverage
-$ npm run test:cov
-```
+## 6. Configuração e Execução
 
-## Deployment
+1. Clone o repositório:  
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+   ```bash
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+   git clone https://github.com/seu-repositorio/boraaí-backend.git
 
-```bash
-$ npm install -g mau
-$ mau deploy
-```
+2. Instale as dependências:
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+   ```bash
 
-## Resources
+   npm install
 
-Check out a few resources that may come in handy when working with NestJS:
+   ```
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+3. Configure o banco de dados no arquivo `app.module.ts`.
 
-## Support
+4. Execute a aplicação:
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+   ```bash
 
-## Stay in touch
+   npm run start:dev
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
 
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
