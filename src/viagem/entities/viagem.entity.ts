@@ -49,13 +49,14 @@ export class Viagem {
 
     //veiculo: Veiculo;
 
-    //usuario: Usuario;
+    //=usuario: Usuario;
 
     @CreateDateColumn()
     criado_em: Date;
 
     @UpdateDateColumn()
     atualizado_em: Date;
+  usuario: any;
 
 
 
