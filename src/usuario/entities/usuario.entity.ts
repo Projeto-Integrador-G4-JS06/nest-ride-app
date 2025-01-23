@@ -7,6 +7,7 @@ import {
   } from 'class-validator';
   import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
   import { Transform, TransformFnParams, Type } from 'class-transformer';
+import { Viagem } from '../../viagem/entities/viagem.entity';
   
   @Entity({ name: 'tb_usuarios' })
   export class Usuario {
@@ -30,11 +31,15 @@ import {
     @Column({ length: 5000 })
     foto: string;
 
-    @Column({ length: 50})
+    @Column({ length: 14, nullable: false})
     @IsNotEmpty()
     cpf: string
 
-    @Column({length: 30})
+    @IsNotEmpty()
+    @Column({ length: 255, nullable: false })
+    endereco: string;
+
+    @Column({length: 14, nullable: false})
     @IsNotEmpty()
     numero_telefone: string
 
@@ -55,7 +60,8 @@ import {
     @UpdateDateColumn()
     atualizado_em: Date
 
-   /* @OneToMany(() => Viagem, (viagem) => viagem.usuario)
-    viagem: Viagem[]; */
+
+    @OneToMany(() => Viagem, (viagem) => viagem.usuario)
+    viagem: Viagem[]; 
 
   }

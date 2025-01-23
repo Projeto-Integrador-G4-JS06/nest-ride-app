@@ -28,6 +28,12 @@ export class ViagemController {
         return this.viagemService.findByDestino(local_destino);
     }
 
+    @Get('/local_partida/:local_partida')
+    @HttpCode(HttpStatus.OK)
+    findByPartida(@Param('local_partida') local_partida: string): Promise<Viagem[]>{
+        return this.viagemService.findByPartida(local_partida);
+    }
+
     @Post()
     @HttpCode(HttpStatus.CREATED)
     create(@Body() viagem: Viagem): Promise<Viagem>{

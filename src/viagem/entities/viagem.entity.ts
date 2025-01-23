@@ -53,15 +53,16 @@ export class Viagem {
     })
     veiculo: Veiculo;
 
-    // @ManyToOne(() => Usuario, (usuario) => usuario.viagem, {
-    //     onDelete: "CASCADE"
-    // })
-    // usuario: Usuario;
+     @ManyToOne(() => Usuario, (usuario) => usuario.viagem, {
+         onDelete: "CASCADE"
+     })
+     usuario: Usuario;
 
     @CreateDateColumn()
     criado_em: Date;
 
     @UpdateDateColumn()
     atualizado_em: Date;
+  
 
 }

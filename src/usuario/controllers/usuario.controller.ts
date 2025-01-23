@@ -1,4 +1,4 @@
-import { All, Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Put } from "@nestjs/common"
+import { All, Body, Controller, Get, HttpCode, HttpStatus, Param, ParseIntPipe, Post, Put } from "@nestjs/common"
 import { UsuarioService } from "../services/usuario.service"
 import { Usuario } from "../entities/usuario.entity"
 
@@ -25,10 +25,16 @@ export class UsuarioController{
         return this.usuarioService.update(usuario)
     }
 
-    @Get('/cpf/:cpf')
+    @Get('/nome/:nome')
     @HttpCode(HttpStatus.OK)
-    findByCpf(@Param('cpf')cpf: string): Promise<Usuario[]>{
-        return this.usuarioService.findByCpf(cpf)
+    findByCpf(@Param('nome')nome: string): Promise<Usuario[]>{
+        return this.usuarioService.findByNome(nome)
+    }
+
+    @Get('/:id')
+    @HttpCode(HttpStatus.OK)
+    findById(@Param('id', ParseIntPipe)id: number): Promise<Usuario>{
+        return this.usuarioService.findById(id)
     }
 
 
