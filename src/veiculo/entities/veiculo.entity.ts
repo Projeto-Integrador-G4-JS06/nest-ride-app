@@ -1,6 +1,13 @@
 import { Transform, TransformFnParams } from 'class-transformer';
 import { IsNotEmpty } from 'class-validator';
-import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { Viagem } from '../../viagem/entities/viagem.entity';
 import { NumericTransformer } from '../../util/numerictransformer';
 
@@ -39,38 +46,34 @@ export class Veiculo {
   @IsNotEmpty()
   @Column({ length: 5000, nullable: false })
   foto: string;
- 
 
   // Baseado em ( ABC-1234 ) <- 8 Caracteres, 10 pra ter folga.
   @Transform(({ value }: TransformFnParams) => value?.trim())
   @IsNotEmpty()
-  @Column({length: 10, nullable: false })
+  @Column({ length: 10, nullable: false })
   placa: string;
 
+  @Transform(({ value }: TransformFnParams) => value?.trim())
   @IsNotEmpty()
-  @Column({ type: "decimal", precision: 10, scale: 2, transformer: new NumericTransformer(), nullable: false})
-  kilometragem: number;
+  @Column({ length: 50, nullable: false })
+  tipo_combustivel: string;
 
   @IsNotEmpty()
-  @Column({ type: "decimal", precision: 10, scale: 2, transformer: new NumericTransformer(), nullable: false})
-  autonomia: number;
-
-  @IsNotEmpty()
-  @Column({nullable: false })
+  @Column({ nullable: false })
   capacidade: number;
 
   @IsNotEmpty()
-  @Column({nullable: false })
+  @Column({ nullable: false })
   num_assentos: number;
 
   @Transform(({ value }: TransformFnParams) => value?.trim())
   @IsNotEmpty()
-  @Column({length: 1000, nullable: false })
+  @Column({ length: 1000, nullable: false })
   itens: string;
 
   @IsNotEmpty()
-  @Column({type: 'boolean', nullable:false, default:true})
-  disponibilidade:boolean;
+  @Column({ type: 'boolean', nullable: false, default: true })
+  disponibilidade: boolean;
 
   @CreateDateColumn()
   criado_em: Date;
@@ -80,6 +83,4 @@ export class Veiculo {
 
   @OneToMany(() => Viagem, (viagem) => viagem.veiculo)
   viagem: Viagem[];
-
-  
 }

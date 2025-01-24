@@ -17,7 +17,7 @@ export class ViagemService{
         return this.viagemRepository.find({
             relations:{
                 veiculo: true,
-            //     usuario: true
+                usuario: true
             }
         }); 
     }
@@ -29,7 +29,7 @@ export class ViagemService{
             },
             relations:{
                 veiculo: true,
-            //     usuario: true
+                usuario: true
             }
         })
 
@@ -45,7 +45,19 @@ export class ViagemService{
             },
             relations:{
                 veiculo: true,
-            //     usuario: true
+                usuario: true
+            }
+        }); 
+    }
+
+    async findByPartida(local_partida: string): Promise<Viagem[]>{
+        return this.viagemRepository.find({
+            where: {
+                local_partida: ILike(`%${local_partida}%`)
+            },
+            relations:{
+                veiculo: true,
+                usuario: true
             }
         }); 
     }
