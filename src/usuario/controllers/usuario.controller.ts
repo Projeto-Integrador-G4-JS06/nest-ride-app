@@ -27,7 +27,7 @@ export class UsuarioController{
 
     @Get('/nome/:nome')
     @HttpCode(HttpStatus.OK)
-    findByCpf(@Param('nome')nome: string): Promise<Usuario[]>{
+    findByNome(@Param('nome')nome: string): Promise<Usuario[]>{
         return this.usuarioService.findByNome(nome)
     }
 
