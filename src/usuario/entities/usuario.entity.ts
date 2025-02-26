@@ -1,67 +1,78 @@
+import { IsDate, IsEmail, IsNotEmpty, MinLength } from 'class-validator';
 import {
-    IsDate,
-    isDate,
-    IsEmail,
-    IsNotEmpty,
-    MinLength,
-  } from 'class-validator';
-  import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
-  import { Transform, TransformFnParams, Type } from 'class-transformer';
+  Column,
+  CreateDateColumn,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { Type } from 'class-transformer';
 import { Viagem } from '../../viagem/entities/viagem.entity';
-  
-  @Entity({ name: 'tb_usuarios' })
-  export class Usuario {
-    @PrimaryGeneratedColumn()
-    id: number;
-  
-    @IsNotEmpty()
-    @Column({ length: 255, nullable: false })
-    nome: string;
-  
-    @IsEmail()
-    @IsNotEmpty()
-    @Column({ length: 255, nullable: false })
-    email: string;
-  
-    @MinLength(8)
-    @IsNotEmpty()
-    @Column({ length: 255, nullable: false })
-    senha: string;
-  
-    @Column({ length: 5000 })
-    foto: string;
+import { ApiProperty } from '@nestjs/swagger';
 
-    @Column({ length: 14, nullable: false})
-    @IsNotEmpty()
-    cpf: string
+@Entity({ name: 'tb_usuarios' })
+export class Usuario {
+  @PrimaryGeneratedColumn()
+  @ApiProperty()
+  id: number;
 
-    @IsNotEmpty()
-    @Column({ length: 255, nullable: false })
-    endereco: string;
+  @IsNotEmpty()
+  @Column({ length: 255, nullable: false })
+  @ApiProperty()
+  nome: string;
 
-    @Column({length: 14, nullable: false})
-    @IsNotEmpty()
-    numero_telefone: string
+  @IsEmail()
+  @IsNotEmpty()
+  @Column({ length: 255, nullable: false })
+  @ApiProperty()
+  email: string;
 
+  @MinLength(8)
+  @IsNotEmpty()
+  @Column({ length: 255, nullable: false })
+  @ApiProperty()
+  senha: string;
 
-    @Column()
-    @IsDate()
-    @Type(() => Date)
-    data_nascimento: Date;
+  @Column({ length: 5000 })
+  @ApiProperty()
+  foto: string;
 
-    @IsNotEmpty()
-    @Column({ length: 255, nullable: false })
-    tipo_usuario: string;
+  @Column({ length: 14, nullable: false })
+  @IsNotEmpty()
+  @ApiProperty()
+  cpf: string;
 
+  @IsNotEmpty()
+  @Column({ length: 255, nullable: false })
+  @ApiProperty()
+  endereco: string;
 
-    @CreateDateColumn()
-    criado_em: Date
+  @Column({ length: 14, nullable: false })
+  @IsNotEmpty()
+  @ApiProperty()
+  numero_telefone: string;
 
-    @UpdateDateColumn()
-    atualizado_em: Date
+  @Column()
+  @IsDate()
+  @Type(() => Date)
+  @ApiProperty()
+  data_nascimento: Date;
 
+  @IsNotEmpty()
+  @Column({ length: 255, nullable: false })
+  @ApiProperty()
+  tipo_usuario: string;
 
-    @OneToMany(() => Viagem, (viagem) => viagem.usuario)
-    viagem: Viagem[]; 
+  @CreateDateColumn()
+  @ApiProperty()
+  criado_em: Date;
 
-  }
+  @UpdateDateColumn()
+  @ApiProperty()
+  atualizado_em: Date;
+
+  @ApiProperty()
+  @OneToMany(() => Viagem, (viagem) => viagem.usuario)
+  viagem: Viagem[];
+}

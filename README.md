@@ -8,9 +8,9 @@
 
 ## 1. Descrição
 
-O BoraAí é uma plataforma de caronas compartilhadas que conecta motoristas e passageiros que possuem trajetos em comum. Com foco na praticidade, economia e sustentabilidade, a aplicação permite criar e gerenciar viagens, promovendo a redução de custos e o impacto ambiental positivo. 
+O BoraAí é uma plataforma de caronas compartilhadas que conecta motoristas e passageiros que possuem trajetos em comum. Com foco na praticidade, economia e sustentabilidade, a aplicação permite criar e gerenciar viagens, promovendo a redução de custos e o impacto ambiental positivo.
 
-------
+---
 
 ## 2. Sobre esta API
 
@@ -18,21 +18,21 @@ Esta API foi construída para ser o backend do sistema BoraAí, centralizando o 
 
 ### 2.1. Principais Funcionalidades
 
-1. Cadastro e gerenciamento de usuários.  
+1. Cadastro e gerenciamento de usuários.
 
-2. Cadastro e gerenciamento de veículos.  
+2. Cadastro e gerenciamento de veículos.
 
-3. Criação, consulta e gerenciamento de viagens.  
+3. Criação, consulta e gerenciamento de viagens.
 
-4. Relacionamentos eficientes entre entidades (usuários, veículos e viagens).  
+4. Relacionamentos eficientes entre entidades (usuários, veículos e viagens).
 
-5. Banco de dados relacional com suporte a consultas e transações complexas.  
+5. Banco de dados relacional com suporte a consultas e transações complexas.
 
-------
+---
 
 ## 3. Diagrama de Classes
 
-``` mermaid
+```mermaid
 classDiagram
     class Usuario {
         - id: number
@@ -76,7 +76,7 @@ classDiagram
         - criadoEm: Date
         - atualizadoEm: Date
         - viagem: Viagem
-        + create(veiculo: Veiculo): Promise<Veiculo> 
+        + create(veiculo: Veiculo): Promise<Veiculo>
         + findById(id: number): Promise<Veiculo>
         + findByModelo(modelo: string): Promise<Veiculo[]>
         + findAll(): Promise<Veiculo[]>
@@ -85,7 +85,7 @@ classDiagram
         + delete(id: number): Promise<DeleteResult>
 
 
-        
+
     }
 
     class Viagem {
@@ -110,18 +110,18 @@ classDiagram
         +  calcularDuracao(distancia: number, vel_media: number): number
         + formatarDuracao(segundosTotais: number): string
         + validarData(data_partida:Date): boolean
-        
-        
+
+
     }
 
-    Usuario "1" --> "n" Viagem : 
-    Viagem "n" --> "1" Usuario : 
-   Veiculo "1" --> "n" Viagem 
+    Usuario "1" --> "n" Viagem :
+    Viagem "n" --> "1" Usuario :
+   Veiculo "1" --> "n" Viagem
    Viagem "n" --> "1" Veiculo
 
 ```
 
-------
+---
 
 ## 4. Diagrama Entidade-Relacionamento (DER)
 
@@ -143,15 +143,17 @@ Adicione a imagem do Diagrama:
 | **ORM**                       | TypeORM    |
 | **Banco de Dados Relacional** | MySQL      |
 
-------
+---
 
 ## 6. Configuração e Execução
 
-1. Clone o repositório:  
+1. Clone o repositório:
 
    ```bash
 
    git clone https://github.com/seu-repositorio/boraaí-backend.git
+
+   ```
 
 2. Instale as dependências:
 
@@ -168,5 +170,4 @@ Adicione a imagem do Diagrama:
    ```bash
 
    npm run start:dev
-
-
+   ```

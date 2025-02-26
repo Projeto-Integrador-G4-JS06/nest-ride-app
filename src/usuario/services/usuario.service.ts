@@ -24,7 +24,10 @@ export function validarIdade(
   }
 
   if (idade < idadeMinima) {
-    throw new HttpException('Usuário com idade inferior à permitida.', HttpStatus.BAD_REQUEST);
+    throw new HttpException(
+      'Usuário com idade inferior à permitida.',
+      HttpStatus.BAD_REQUEST,
+    );
   }
 }
 

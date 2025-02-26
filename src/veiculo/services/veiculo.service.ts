@@ -34,7 +34,10 @@ export class VeiculoService {
     });
 
     if (!veiculo)
-      throw new HttpException('ID do veículo não foi encontrado', HttpStatus.NOT_FOUND);
+      throw new HttpException(
+        'ID do veículo não foi encontrado',
+        HttpStatus.NOT_FOUND,
+      );
     return veiculo;
   }
 
@@ -62,16 +65,16 @@ export class VeiculoService {
     // Realizada a comparação
     if (numero !== 0 && numero !== 1) {
       throw new HttpException(
-        'Valor de disponibilidade inválido. Por favor, forneça 0 (indisponível) ou 1 (disponível).', HttpStatus.BAD_REQUEST
+        'Valor de disponibilidade inválido. Por favor, forneça 0 (indisponível) ou 1 (disponível).',
+        HttpStatus.BAD_REQUEST,
       );
-    } 
+    }
     return await this.veiculoRepository.find({
       where: {
         disponibilidade: disponibilidade,
       },
     });
   }
-
 
   async update(veiculo: Veiculo): Promise<Veiculo> {
     await this.findById(veiculo.id);
