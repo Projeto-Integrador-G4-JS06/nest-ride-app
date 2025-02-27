@@ -7,6 +7,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Viagem } from '../entities/viagem.entity';
 import { DeleteResult, ILike, Repository } from 'typeorm';
+import { isPast } from 'date-fns';
 
 @Injectable()
 export class ViagemService {
@@ -56,6 +57,26 @@ export class ViagemService {
     return this.viagemRepository.find({
       where: {
         local_partida: ILike(`%${local_partida}%`),
+      },
+      relations: {
+        veiculo: true,
+        usuario: true,
+      },
+    });
+  }
+
+  async matchViagens(
+    local_partida: string,
+    horario_partida: string,
+    data_partida: Date,
+    local_destino: string,
+  ): Promise<Viagem[]> {
+    return this.viagemRepository.find({
+      where: {
+        local_partida,
+        horario_partida,
+        data_partida,
+        local_destino,
       },
       relations: {
         veiculo: true,
@@ -124,12 +145,10 @@ export class ViagemService {
   }
 
   validarData(data_partida: Date) {
-    const { isPast } = require('date-fns');
-    const result = isPast(data_partida);
-
-    if (result)
+    if (isPast(data_partida)) {
       throw new BadRequestException(
         'A data de partida não pode ser retroativa',
       );
+    }
   }
 }

@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -34,17 +35,34 @@ export class ViagemController {
   @Get('/localdestino/:localdestino')
   @HttpCode(HttpStatus.OK)
   findByDestino(
-    @Param('localdestino') localdestino: string,
+    @Param('localdestino') local_destino: string,
   ): Promise<Viagem[]> {
-    return this.viagemService.findByDestino(localdestino);
+    return this.viagemService.findByDestino(local_destino);
   }
 
   @Get('/localpartida/:localpartida')
   @HttpCode(HttpStatus.OK)
   findByPartida(
-    @Param('localpartida') localpartida: string,
+    @Param('localpartida') local_partida: string,
   ): Promise<Viagem[]> {
-    return this.viagemService.findByPartida(localpartida);
+    return this.viagemService.findByPartida(local_partida);
+  }
+
+  @Post('buscar')
+  async matchViagens(@Body() body: any): Promise<Viagem[]> {
+    const { local_partida, horario_partida, data_partida, local_destino } =
+      body;
+
+    if (!local_partida || !horario_partida || !data_partida || !local_destino) {
+      throw new BadRequestException('Todos os campos são obrigatórios.');
+    }
+
+    return this.viagemService.matchViagens(
+      local_partida,
+      horario_partida,
+      data_partida,
+      local_destino,
+    );
   }
 
   @Post('/cadastrar')
