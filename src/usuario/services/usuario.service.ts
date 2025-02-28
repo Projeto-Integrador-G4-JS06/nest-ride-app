@@ -2,19 +2,19 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Usuario } from '../entities/usuario.entity';
 import { ILike, Repository } from 'typeorm';
+import { UsuarioDto } from '../dto/usuario.dto';
+import { plainToInstance } from 'class-transformer';
 
 export function validarIdade(
-  dataNascimento: string | Date,
+  dataNascimento: Date,
   idadeMinima: number = 18,
 ): void {
-  const dataNascimentoDate = new Date(dataNascimento);
-
   const dataAtual = new Date();
-  let idade = dataAtual.getFullYear() - dataNascimentoDate.getFullYear();
+  let idade = dataAtual.getFullYear() - dataNascimento.getFullYear();
   const mesAtual = dataAtual.getMonth();
   const diaAtual = dataAtual.getDate();
-  const mesNascimento = dataNascimentoDate.getMonth();
-  const diaNascimento = dataNascimentoDate.getDate();
+  const mesNascimento = dataNascimento.getMonth();
+  const diaNascimento = dataNascimento.getDate();
 
   if (
     mesAtual < mesNascimento ||
@@ -39,79 +39,72 @@ export class UsuarioService {
   ) {}
 
   async findAll(): Promise<Usuario[]> {
-    return await this.usuarioRepository.find({
-      // relations: {
-      //   viagem: true,
-      // },
-    });
+    return await this.usuarioRepository.find();
   }
 
   async findById(id: number): Promise<Usuario> {
-    const usuario = await this.usuarioRepository.findOne({
-      where: {
-        id,
-      },
-      // relations: {
-      //   viagem: true,
-      // },
-    });
+    const usuario = await this.usuarioRepository.findOne({ where: { id } });
 
     if (!usuario)
-      throw new HttpException('Usuario não encontrado!', HttpStatus.NOT_FOUND);
+      throw new HttpException('Usuário não encontrado!', HttpStatus.NOT_FOUND);
 
     return usuario;
   }
 
   async findByNome(nome: string): Promise<Usuario[]> {
     return this.usuarioRepository.find({
-      where: {
-        nome: ILike(`%${nome}%`),
-      },
-      // relations: {
-      //   viagem: true,
-      // },
+      where: { nome: ILike(`%${nome}%`) },
     });
   }
 
-  // Método auxiliar para validação do usuário
-  async findByEmail(email: string): Promise<Usuario | undefined> {
-    return await this.usuarioRepository.findOne({
-      where: {
-        email: email,
-      },
-      // relations: {
-      //   viagem: true,
-      // },
-    });
+  async findByEmail(email: string): Promise<Usuario | null> {
+    return await this.usuarioRepository.findOne({ where: { email } });
   }
 
-  async create(usuario: Usuario): Promise<Usuario> {
-    const buscaUsuario = await this.findByEmail(usuario.email);
+  async create(usuarioDto: UsuarioDto): Promise<Usuario> {
+    const buscaUsuario = await this.findByEmail(usuarioDto.email);
 
     if (buscaUsuario) {
       throw new HttpException('O Usuário já existe!', HttpStatus.BAD_REQUEST);
     }
 
-    // Validar a idade do usuário
+    const usuario = plainToInstance(Usuario, usuarioDto);
+    usuario.data_nascimento = new Date(usuarioDto.data_nascimento); // Garantindo que seja um Date
+
     validarIdade(usuario.data_nascimento);
 
     return await this.usuarioRepository.save(usuario);
   }
 
-  async update(usuario: Usuario): Promise<Usuario> {
-    await this.findById(usuario.id);
+  async update(id: number, usuarioDto: UsuarioDto): Promise<Usuario> {
+    const usuarioExistente = await this.findById(id);
 
-    const buscaUsuario = await this.findByEmail(usuario.email);
+    if (!usuarioExistente) {
+      throw new HttpException('Usuário não encontrado!', HttpStatus.NOT_FOUND);
+    }
 
-    if (buscaUsuario && buscaUsuario.id !== usuario.id)
+    const buscaUsuario = await this.findByEmail(usuarioDto.email);
+
+    if (buscaUsuario && buscaUsuario.id !== id) {
       throw new HttpException(
         'Usuário (e-mail) já cadastrado!',
         HttpStatus.BAD_REQUEST,
       );
+    }
 
-    // Validar a idade do usuário
-    validarIdade(usuario.data_nascimento);
+    // Atualizar os campos manualmente
+    usuarioExistente.nome = usuarioDto.nome;
+    usuarioExistente.email = usuarioDto.email;
+    usuarioExistente.senha = usuarioDto.senha;
+    usuarioExistente.foto = usuarioDto.foto;
+    usuarioExistente.cpf = usuarioDto.cpf;
+    usuarioExistente.endereco = usuarioDto.endereco;
+    usuarioExistente.numero_telefone = usuarioDto.numero_telefone;
+    usuarioExistente.tipo_usuario = usuarioDto.tipo_usuario;
+    usuarioExistente.data_nascimento = new Date(usuarioDto.data_nascimento); // Garantindo que seja um Date
 
-    return await this.usuarioRepository.save(usuario);
+    validarIdade(usuarioExistente.data_nascimento);
+
+    return await this.usuarioRepository.save(usuarioExistente);
   }
 }

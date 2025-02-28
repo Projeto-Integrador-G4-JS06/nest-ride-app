@@ -1,78 +1,81 @@
-import { IsDate, IsEmail, IsNotEmpty, MinLength } from 'class-validator';
+import { IsEmail, IsNotEmpty, MinLength } from 'class-validator';
 import {
   Column,
   CreateDateColumn,
   Entity,
-  OneToMany,
+  // OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Type } from 'class-transformer';
-import { Viagem } from '../../viagem/entities/viagem.entity';
+// import { Viagem } from '../../viagem/entities/viagem.entity';
 import { ApiProperty } from '@nestjs/swagger';
 
 @Entity({ name: 'tb_usuarios' })
 export class Usuario {
   @PrimaryGeneratedColumn()
-  @ApiProperty()
+  @ApiProperty({ description: 'ID do usuário (gerado automaticamente)' })
   id: number;
 
   @IsNotEmpty()
   @Column({ length: 255, nullable: false })
-  @ApiProperty()
+  @ApiProperty({ description: 'Nome completo do usuário' })
   nome: string;
 
   @IsEmail()
   @IsNotEmpty()
-  @Column({ length: 255, nullable: false })
-  @ApiProperty()
+  @Column({ length: 255, unique: true, nullable: false })
+  @ApiProperty({ description: 'Endereço de e-mail do usuário' })
   email: string;
 
   @MinLength(8)
   @IsNotEmpty()
   @Column({ length: 255, nullable: false })
-  @ApiProperty()
+  @ApiProperty({ description: 'Senha do usuário (mínimo 8 caracteres)' })
   senha: string;
 
-  @Column({ length: 5000 })
-  @ApiProperty()
-  foto: string;
+  @Column({ length: 5000, nullable: true })
+  @ApiProperty({ description: 'URL da foto do usuário', required: false })
+  foto?: string;
 
-  @Column({ length: 14, nullable: false })
+  @Column({ length: 14, nullable: false, unique: true })
   @IsNotEmpty()
-  @ApiProperty()
+  @ApiProperty({ description: 'CPF do usuário no formato XXX.XXX.XXX-XX' })
   cpf: string;
 
   @IsNotEmpty()
   @Column({ length: 255, nullable: false })
-  @ApiProperty()
+  @ApiProperty({ description: 'Endereço completo do usuário' })
   endereco: string;
 
   @Column({ length: 14, nullable: false })
   @IsNotEmpty()
-  @ApiProperty()
+  @ApiProperty({ description: 'Número de telefone do usuário' })
   numero_telefone: string;
 
-  @Column()
-  @IsDate()
+  @Column({ type: 'date', nullable: false })
   @Type(() => Date)
-  @ApiProperty()
+  @IsNotEmpty()
+  @ApiProperty({
+    description: 'Data de nascimento do usuário (YYYY-MM-DD)',
+    format: 'date',
+  })
   data_nascimento: Date;
 
   @IsNotEmpty()
   @Column({ length: 255, nullable: false })
-  @ApiProperty()
+  @ApiProperty({ description: 'Tipo do usuário (ex: "driver", "user")' })
   tipo_usuario: string;
 
   @CreateDateColumn()
-  @ApiProperty()
+  @ApiProperty({ description: 'Data de criação do registro' })
   criado_em: Date;
 
   @UpdateDateColumn()
-  @ApiProperty()
+  @ApiProperty({ description: 'Data da última atualização do registro' })
   atualizado_em: Date;
 
-  // @ApiProperty()
   // @OneToMany(() => Viagem, (viagem) => viagem.usuario)
+  // @ApiProperty({ description: 'Lista de viagens associadas ao usuário' })
   // viagem: Viagem[];
 }
