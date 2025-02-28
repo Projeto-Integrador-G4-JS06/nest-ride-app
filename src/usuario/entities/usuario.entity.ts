@@ -72,7 +72,7 @@ export class Usuario {
   @ApiProperty()
   atualizado_em: Date;
 
-  @ApiProperty()
-  @OneToMany(() => Viagem, (viagem) => viagem.usuario)
-  viagem: Viagem[];
+  // @ApiProperty()
+  // @OneToMany(() => Viagem, (viagem) => viagem.usuario)
+  // viagem: Viagem[];
 }
