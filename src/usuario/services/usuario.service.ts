@@ -40,9 +40,9 @@ export class UsuarioService {
 
   async findAll(): Promise<Usuario[]> {
     return await this.usuarioRepository.find({
-      relations: {
-        viagem: true,
-      },
+      // relations: {
+      //   viagem: true,
+      // },
     });
   }
 
@@ -51,9 +51,9 @@ export class UsuarioService {
       where: {
         id,
       },
-      relations: {
-        viagem: true,
-      },
+      // relations: {
+      //   viagem: true,
+      // },
     });
 
     if (!usuario)
@@ -67,9 +67,9 @@ export class UsuarioService {
       where: {
         nome: ILike(`%${nome}%`),
       },
-      relations: {
-        viagem: true,
-      },
+      // relations: {
+      //   viagem: true,
+      // },
     });
   }
 
@@ -79,9 +79,9 @@ export class UsuarioService {
       where: {
         email: email,
       },
-      relations: {
-        viagem: true,
-      },
+      // relations: {
+      //   viagem: true,
+      // },
     });
   }
 
