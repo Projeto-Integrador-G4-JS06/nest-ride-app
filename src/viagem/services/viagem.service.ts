@@ -7,7 +7,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Viagem } from '../entities/viagem.entity';
 import { DeleteResult, Repository } from 'typeorm';
-import { isPast } from 'date-fns';
+import { isBefore, isToday } from 'date-fns';
 import { BuscarViagemDto } from '../dto/buscar-viagem.dto';
 
 @Injectable()
@@ -15,7 +15,7 @@ export class ViagemService {
   constructor(
     @InjectRepository(Viagem)
     private viagemRepository: Repository<Viagem>,
-  ) { }
+  ) {}
 
   async findAll(): Promise<Viagem[]> {
     return this.viagemRepository.find({
@@ -140,7 +140,10 @@ export class ViagemService {
   }
 
   validarData(data_partida: Date) {
-    if (isPast(data_partida)) {
+    const hoje = new Date();
+
+    // Verifica se a data é anterior a hoje e não é hoje
+    if (isBefore(data_partida, hoje) && !isToday(data_partida)) {
       throw new BadRequestException(
         'A data de partida não pode ser retroativa',
       );
