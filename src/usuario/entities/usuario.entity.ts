@@ -3,12 +3,12 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  OneToMany,
+  // OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Type } from 'class-transformer';
-import { Viagem } from '../../viagem/entities/viagem.entity';
+// import { Viagem } from '../../viagem/entities/viagem.entity';
 import { ApiProperty } from '@nestjs/swagger';
 
 @Entity({ name: 'tb_usuarios' })
