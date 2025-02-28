@@ -15,7 +15,7 @@ export class ViagemService {
   constructor(
     @InjectRepository(Viagem)
     private viagemRepository: Repository<Viagem>,
-  ) {}
+  ) { }
 
   async findAll(): Promise<Viagem[]> {
     return this.viagemRepository.find({
@@ -51,26 +51,33 @@ export class ViagemService {
       cidade_destino,
     } = buscarViagemDto;
 
-    return (
-      this.viagemRepository
-        .createQueryBuilder('viagem')
-        .leftJoinAndSelect('viagem.veiculo', 'veiculo') // Inclui os dados do veículo
-        // .leftJoinAndSelect('viagem.usuario', 'usuario') // Caso queira incluir o usuário no futuro
-        .where('LOWER(viagem.bairro_partida) = LOWER(:bairro_partida)', {
-          bairro_partida,
-        })
-        .andWhere('LOWER(viagem.cidade_partida) = LOWER(:cidade_partida)', {
-          cidade_partida,
-        })
-        .andWhere('viagem.data_partida = :data_partida', { data_partida }) // Evita problemas de fuso horário
-        .andWhere('LOWER(viagem.bairro_destino) = LOWER(:bairro_destino)', {
-          bairro_destino,
-        })
-        .andWhere('LOWER(viagem.cidade_destino) = LOWER(:cidade_destino)', {
-          cidade_destino,
-        })
-        .getMany()
-    );
+    const viagens = await this.viagemRepository
+      .createQueryBuilder('viagem')
+      .leftJoinAndSelect('viagem.veiculo', 'veiculo') // Inclui os dados do veículo
+      // .leftJoinAndSelect('viagem.usuario', 'usuario') // Caso queira incluir o usuário no futuro
+      .where('LOWER(viagem.bairro_partida) = LOWER(:bairro_partida)', {
+        bairro_partida,
+      })
+      .andWhere('LOWER(viagem.cidade_partida) = LOWER(:cidade_partida)', {
+        cidade_partida,
+      })
+      .andWhere('viagem.data_partida = :data_partida', { data_partida }) // Evita problemas de fuso horário
+      .andWhere('LOWER(viagem.bairro_destino) = LOWER(:bairro_destino)', {
+        bairro_destino,
+      })
+      .andWhere('LOWER(viagem.cidade_destino) = LOWER(:cidade_destino)', {
+        cidade_destino,
+      })
+      .getMany();
+
+    if (viagens.length === 0) {
+      throw new HttpException(
+        'Não há trajetos disponíveis para essas correspondências.',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+
+    return viagens;
   }
 
   async create(viagem: Viagem): Promise<Viagem> {
