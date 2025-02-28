@@ -11,7 +11,7 @@ import {
 import { NumericTransformer } from '../../util/numerictransformer';
 import { DateTransformer } from '../../util/datetransformer';
 import { Veiculo } from '../../veiculo/entities/veiculo.entity';
-import { Usuario } from '../../usuario/entities/usuario.entity';
+// import { Usuario } from '../../usuario/entities/usuario.entity';
 import { ApiProperty } from '@nestjs/swagger';
 
 @Entity({ name: 'tb_viagens' })
@@ -24,13 +24,13 @@ export class Viagem {
   @Transform(({ value }: TransformFnParams) => value?.trim())
   @IsNotEmpty()
   @Column({ length: 255, nullable: false })
-  local_partida: string;
+  bairro_partida: string;
 
   @ApiProperty()
   @Transform(({ value }: TransformFnParams) => value?.trim())
   @IsNotEmpty()
-  @Column({ length: 5, nullable: false })
-  horario_partida: string;
+  @Column({ length: 255, nullable: false })
+  cidade_partida: string;
 
   @ApiProperty()
   @IsNotEmpty()
@@ -41,7 +41,13 @@ export class Viagem {
   @Transform(({ value }: TransformFnParams) => value?.trim())
   @IsNotEmpty()
   @Column({ length: 255, nullable: false })
-  local_destino: string;
+  bairro_destino: string;
+
+  @ApiProperty()
+  @Transform(({ value }: TransformFnParams) => value?.trim())
+  @IsNotEmpty()
+  @Column({ length: 255, nullable: false })
+  cidade_destino: string;
 
   @ApiProperty()
   @Column({ type: 'float', nullable: true })
@@ -75,11 +81,11 @@ export class Viagem {
   })
   veiculo: Veiculo;
 
-  @ApiProperty({ type: () => Usuario })
-  @ManyToOne(() => Usuario, (usuario) => usuario.viagem, {
-    onDelete: 'CASCADE',
-  })
-  usuario: Usuario;
+  // @ApiProperty({ type: () => Usuario })
+  // @ManyToOne(() => Usuario, (usuario) => usuario.viagem, {
+  //   onDelete: 'CASCADE',
+  // })
+  // usuario: Usuario;
 
   @ApiProperty()
   @CreateDateColumn()

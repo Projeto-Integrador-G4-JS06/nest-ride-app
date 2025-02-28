@@ -15,7 +15,7 @@ export class VeiculoService {
 
     if (ano < 2020) {
       throw new HttpException(
-        'O ano informado para o veículo não é válido. Apenas carros fabricados a partir de 2020 são aceitos. 😊 ',
+        'O ano informado para o veículo não é válido. Apenas carros fabricados a partir de 2020 são aceitos!',
         HttpStatus.FORBIDDEN,
       );
     } else {

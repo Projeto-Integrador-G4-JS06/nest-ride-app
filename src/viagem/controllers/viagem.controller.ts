@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -14,11 +13,12 @@ import {
 import { ViagemService } from '../services/viagem.service';
 import { Viagem } from '../entities/viagem.entity';
 import { ApiTags } from '@nestjs/swagger';
+import { BuscarViagemDto } from '../dto/buscar-viagem.dto';
 
 @ApiTags('Viagem')
 @Controller('/viagens')
 export class ViagemController {
-  constructor(private readonly viagemService: ViagemService) {}
+  constructor(private readonly viagemService: ViagemService) { }
 
   @Get('/all')
   @HttpCode(HttpStatus.OK)
@@ -32,37 +32,11 @@ export class ViagemController {
     return this.viagemService.findById(id);
   }
 
-  @Get('/localdestino/:localdestino')
-  @HttpCode(HttpStatus.OK)
-  findByDestino(
-    @Param('localdestino') local_destino: string,
-  ): Promise<Viagem[]> {
-    return this.viagemService.findByDestino(local_destino);
-  }
-
-  @Get('/localpartida/:localpartida')
-  @HttpCode(HttpStatus.OK)
-  findByPartida(
-    @Param('localpartida') local_partida: string,
-  ): Promise<Viagem[]> {
-    return this.viagemService.findByPartida(local_partida);
-  }
-
   @Post('buscar')
-  async matchViagens(@Body() body: any): Promise<Viagem[]> {
-    const { local_partida, horario_partida, data_partida, local_destino } =
-      body;
-
-    if (!local_partida || !horario_partida || !data_partida || !local_destino) {
-      throw new BadRequestException('Todos os campos são obrigatórios.');
-    }
-
-    return this.viagemService.matchViagens(
-      local_partida,
-      horario_partida,
-      data_partida,
-      local_destino,
-    );
+  async matchViagens(
+    @Body() buscarViagemDto: BuscarViagemDto,
+  ): Promise<Viagem[]> {
+    return this.viagemService.matchViagens(buscarViagemDto);
   }
 
   @Post('/cadastrar')

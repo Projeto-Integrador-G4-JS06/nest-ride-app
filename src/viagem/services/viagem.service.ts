@@ -6,8 +6,9 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Viagem } from '../entities/viagem.entity';
-import { DeleteResult, ILike, Repository } from 'typeorm';
+import { DeleteResult, Repository } from 'typeorm';
 import { isPast } from 'date-fns';
+import { BuscarViagemDto } from '../dto/buscar-viagem.dto';
 
 @Injectable()
 export class ViagemService {
@@ -20,7 +21,7 @@ export class ViagemService {
     return this.viagemRepository.find({
       relations: {
         veiculo: true,
-        usuario: true,
+        // usuario: true,
       },
     });
   }
@@ -32,7 +33,7 @@ export class ViagemService {
       },
       relations: {
         veiculo: true,
-        usuario: true,
+        // usuario: true,
       },
     });
 
@@ -41,48 +42,35 @@ export class ViagemService {
     return viagem;
   }
 
-  async findByDestino(local_destino: string): Promise<Viagem[]> {
-    return this.viagemRepository.find({
-      where: {
-        local_destino: ILike(`%${local_destino}%`),
-      },
-      relations: {
-        veiculo: true,
-        usuario: true,
-      },
-    });
-  }
+  async matchViagens(buscarViagemDto: BuscarViagemDto): Promise<Viagem[]> {
+    const {
+      bairro_partida,
+      cidade_partida,
+      data_partida,
+      bairro_destino,
+      cidade_destino,
+    } = buscarViagemDto;
 
-  async findByPartida(local_partida: string): Promise<Viagem[]> {
-    return this.viagemRepository.find({
-      where: {
-        local_partida: ILike(`%${local_partida}%`),
-      },
-      relations: {
-        veiculo: true,
-        usuario: true,
-      },
-    });
-  }
-
-  async matchViagens(
-    local_partida: string,
-    horario_partida: string,
-    data_partida: Date,
-    local_destino: string,
-  ): Promise<Viagem[]> {
-    return this.viagemRepository.find({
-      where: {
-        local_partida,
-        horario_partida,
-        data_partida,
-        local_destino,
-      },
-      relations: {
-        veiculo: true,
-        usuario: true,
-      },
-    });
+    return (
+      this.viagemRepository
+        .createQueryBuilder('viagem')
+        .leftJoinAndSelect('viagem.veiculo', 'veiculo') // Inclui os dados do veículo
+        // .leftJoinAndSelect('viagem.usuario', 'usuario') // Caso queira incluir o usuário no futuro
+        .where('LOWER(viagem.bairro_partida) = LOWER(:bairro_partida)', {
+          bairro_partida,
+        })
+        .andWhere('LOWER(viagem.cidade_partida) = LOWER(:cidade_partida)', {
+          cidade_partida,
+        })
+        .andWhere('viagem.data_partida = :data_partida', { data_partida }) // Evita problemas de fuso horário
+        .andWhere('LOWER(viagem.bairro_destino) = LOWER(:bairro_destino)', {
+          bairro_destino,
+        })
+        .andWhere('LOWER(viagem.cidade_destino) = LOWER(:cidade_destino)', {
+          cidade_destino,
+        })
+        .getMany()
+    );
   }
 
   async create(viagem: Viagem): Promise<Viagem> {

@@ -16,7 +16,7 @@ import { ApiTags } from '@nestjs/swagger';
 @ApiTags('Usuario')
 @Controller('/usuarios')
 export class UsuarioController {
-  constructor(private readonly usuarioService: UsuarioService) {}
+  constructor(private readonly usuarioService: UsuarioService) { }
 
   @Get('/all')
   @HttpCode(HttpStatus.OK)
@@ -30,6 +30,12 @@ export class UsuarioController {
     return this.usuarioService.findById(id);
   }
 
+  @Get('/nome/:nome')
+  @HttpCode(HttpStatus.OK)
+  findByNome(@Param('nome') nome: string): Promise<Usuario[]> {
+    return this.usuarioService.findByNome(nome);
+  }
+
   @Post('/cadastrar')
   @HttpCode(HttpStatus.CREATED)
   async create(@Body() usuario: Usuario): Promise<Usuario> {
@@ -40,11 +46,5 @@ export class UsuarioController {
   @HttpCode(HttpStatus.OK)
   async update(@Body() usuario: Usuario): Promise<Usuario> {
     return this.usuarioService.update(usuario);
-  }
-
-  @Get('/nome/:nome')
-  @HttpCode(HttpStatus.OK)
-  findByNome(@Param('nome') nome: string): Promise<Usuario[]> {
-    return this.usuarioService.findByNome(nome);
   }
 }

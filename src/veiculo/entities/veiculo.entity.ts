@@ -64,6 +64,12 @@ export class Veiculo {
   @ApiProperty()
   tipo_combustivel: string;
 
+  @Transform(({ value }: TransformFnParams) => value?.trim())
+  @IsNotEmpty()
+  @Column({ length: 50, nullable: false })
+  @ApiProperty()
+  tipo_transmissao: string;
+
   @IsNotEmpty()
   @Column({ nullable: false })
   @ApiProperty()
@@ -76,7 +82,7 @@ export class Veiculo {
 
   @Transform(({ value }: TransformFnParams) => value?.trim())
   @IsNotEmpty()
-  @Column({ length: 1000, nullable: false })
+  @Column({ length: 1000, nullable: true })
   @ApiProperty()
   itens: string;
 
