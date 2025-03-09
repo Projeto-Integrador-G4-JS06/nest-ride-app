@@ -120,7 +120,7 @@ classDiagram
 <br />
 
 <div align="center">
-    <img src="[https://cdn.discordapp.com/attachments/1331751152190099576/1332038711793418240/DER.png?ex=6793cd38&is=67927bb8&hm=d0da1b4b4887e9c7a00e41cb062289aef1da62f8cc585635121d78d12736b761&](https://ik.imagekit.io/czhooyc3x/BoraA%C3%AD/DER.png?updatedAt=1741556201753)" alt="Diagrama Entidade-Relacionamento (DER)" />
+    <img src="https://ik.imagekit.io/czhooyc3x/BoraA%C3%AD/DER.png?updatedAt=1741556201753" alt="Diagrama Entidade-Relacionamento (DER)" />
 </div>
 
 <br />
