@@ -2,7 +2,7 @@
 
 <br />
 <div align="center">
-    <img src="https://i.imgur.com/icgjsRQ.png" title="source: imgur.com" width="50%"/>
+    <img src="https://ik.imagekit.io/czhooyc3x/BoraA%C3%AD/BORA%20AI.svg?updatedAt=1741553452499" title="Logo - BoraAí" width="50%"/>
 </div>
 <br /><br />
 
@@ -51,11 +51,10 @@ classDiagram
         + create(usuario: Usuario): Promise<Usuario>
         + findAll(): Promise<Usuario[]>
         + findById(id: number): Promise<Usuario>
-        + findByNome(nome:string): Promise<Usuario[]>
-        +findByEmail(email: string): Promise<Usuario | undefined>
+        + findByNome(nome: string): Promise<Usuario[]>
+        + findByEmail(email: string): Promise<Usuario | undefined>
         + update(usuario: Usuario): Promise<Usuario>
-        + validarIdade((dataNascimento: string | Date, idadeMinima: number = 18)
-
+        + validarIdade(dataNascimento: string | Date, idadeMinima: number = 18): boolean
     }
 
     class Veiculo {
@@ -73,8 +72,8 @@ classDiagram
         - capacidade: number
         - itens: string
         - disponibilidade: boolean
-        - criadoEm: Date
-        - atualizadoEm: Date
+        - criado_em: Date
+        - atualizado_em: Date
         - viagem: Viagem
         + create(veiculo: Veiculo): Promise<Veiculo>
         + findById(id: number): Promise<Veiculo>
@@ -83,16 +82,13 @@ classDiagram
         + findAllAvailable(disponibilidade: boolean): Promise<Veiculo[]>
         + update(veiculo: Veiculo): Promise<Veiculo>
         + delete(id: number): Promise<DeleteResult>
-
-
-
     }
 
     class Viagem {
         - id: number
         - local_partida: string
         - horario_partida: string
-        - data_partida: string
+        - data_partida: Date
         - local_destino: string
         - distancia: number
         - vel_media: number
@@ -104,20 +100,17 @@ classDiagram
         + findAll(): Promise<Viagem[]>
         + findById(id: number): Promise<Viagem>
         + findByDestino(local_destino: string): Promise<Viagem[]>
-        + findByDestino(local_destino: string): Promise<Viagem[]>
         + update(viagem: Viagem): Promise<Viagem>
         + delete(id: number): Promise<DeleteResult>
-        +  calcularDuracao(distancia: number, vel_media: number): number
+        + calcularDuracao(distancia: number, vel_media: number): number
         + formatarDuracao(segundosTotais: number): string
-        + validarData(data_partida:Date): boolean
-
-
+        + validarData(data_partida: Date): boolean
     }
 
-    Usuario "1" --> "n" Viagem :
-    Viagem "n" --> "1" Usuario :
-   Veiculo "1" --> "n" Viagem
-   Viagem "n" --> "1" Veiculo
+    Usuario "1" --> "n" Viagem
+    Viagem "n" --> "1" Usuario
+    Veiculo "1" --> "n" Viagem
+    Viagem "n" --> "1" Veiculo
 
 ```
 
@@ -151,7 +144,7 @@ Adicione a imagem do Diagrama:
 
    ```bash
 
-   git clone https://github.com/seu-repositorio/boraaí-backend.git
+   git clone [https://github.com/seu-repositorio/boraaí-backend.git](https://github.com/Projeto-Integrador-G4-JS06/nest-ride-app.git)
 
    ```
 
